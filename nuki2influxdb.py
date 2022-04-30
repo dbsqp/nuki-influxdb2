@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 # encoding=utf-8
 
 from pytz import timezone
@@ -47,7 +47,7 @@ influxdb2_bucket=os.getenv('INFLUXDB2_BUCKET', "DEV")
 if os.path.exists('private-nuki.py'):
     print("  incl: private-nuki.py")
     exec(compile(source=open('private-nuki.py').read(), filename='private-nuki.py', mode='exec'))
-    debug = True
+    debug = False
 
 
 # report debug status
@@ -251,7 +251,7 @@ for key in devList:
 
     if key['type'] == 2:
         if key['state']['batteryCritical'] == "true":
-            battery=10
+            battery=20
         else:
             battery=100
         battery=float(round(battery,2))
@@ -303,6 +303,8 @@ for key in devList:
             elif triggerID == 6: trigger="continious"
             else:                trigger="other"
 
+            print ( name.rjust(10,' ')+" - TR: "+str(triggerID)+"-"+trigger.ljust(12,' ')+"ST: "+str(stateID)+"-"+state.ljust(12,' ')+" TM: "+logEntry['date'])
+
             who=logEntry['name']
 
             if not who:
@@ -311,4 +313,8 @@ for key in devList:
             senddata["tags"]["who"]=who
             senddata["fields"]["trigger"]=trigger
             senddata["fields"]["state"]=state
+
+#            senddata["tags"]["triggerID"]=triggerID
+#            senddata["tags"]["stateID"]=stateID
+
             write_influxdb()
