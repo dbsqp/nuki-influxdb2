@@ -34,7 +34,12 @@ dbsqp/nuki-influxdbv2:latest
 ```
 Note NUKI_BRIDGE_IP and NUKI_BRIDGE_TOKEN are optional.
 
-## Debug
+# Options
+```
+ -e INFLUXDB2_SSL="True" \
+```
+
+# Debug
 To report out further details in the log enable debug:
 ```
  -e DEBUG="TRUE"
