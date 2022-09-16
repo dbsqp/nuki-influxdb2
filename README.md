@@ -37,6 +37,7 @@ Note NUKI_BRIDGE_IP and NUKI_BRIDGE_TOKEN are optional.
 # Options
 ```
  -e INFLUXDB2_SSL="True" \
+ -e INFLUXDB2_SSL_VERIFY="TRUE"
 ```
 
 # Debug
