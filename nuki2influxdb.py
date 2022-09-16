@@ -66,6 +66,14 @@ if os.path.exists('private-nuki.py'):
 # report debug status
 if debug:
     print ( " debug: TRUE" )
+    if influxdb2_ssl:
+        print ( "   SSL: TRUE" )
+    else:
+        print ( "   SSL: FALSE" )
+    if influxdb2_ssl_verify:
+        print ( "verify: TRUE" )
+    else:
+        print ( "verify: FALSE" )
 else:
     print ( " debug: FALSE" )
 
@@ -77,9 +85,17 @@ else:
     influxdb2_url="http://" + influxdb2_host + ":" + str(influxdb2_port)
     
 if debug:
-    print ( "influx: "+influxdb2_bucket+" at "+influxdb2_url )
+    print ( "influx"+influxdb2_url+"\nbucket: "+influxdb2_bucket )
 
-client = InfluxDBClient(url=influxdb2_url, token=influxdb2_token, org=influxdb2_org, verify_ssl=influxdb2_ssl_verify)
+if influxdb2_ssl_verify:
+    if debug:
+        print ( "verify: True" )
+    client = InfluxDBClient(url=influxdb2_url, token=influxdb2_token, org=influxdb2_org, verify_ssl=True)
+else:
+    if debug:
+        print ( "verify: False" )
+    client = InfluxDBClient(url=influxdb2_url, token=influxdb2_token, org=influxdb2_org, verify_ssl=False)
+
 write_api = client.write_api(write_options=SYNCHRONOUS)
 
 def write_influxdb():
